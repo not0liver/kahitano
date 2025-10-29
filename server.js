@@ -5,28 +5,28 @@ import session from "express-session";
 import path from "path";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
+import Brevo from "@getbrevo/brevo";
 import { fileURLToPath } from "url";
 import Appointment from "./models/Appointment.js";
-import Brevo from "@getbrevo/brevo";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGO_URI)
+// ✅ MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .catch((err) => console.error("❌ MongoDB error:", err));
 
-// ----------------- USER MODEL -----------------
+// ✅ User model
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   verified: { type: Boolean, default: false },
-  verificationCode: { type: String }
+  verificationCode: { type: String },
 });
-
 const User = mongoose.model("User", userSchema);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,27 +44,17 @@ app.use(
   })
 );
 
-// ✅ Brevo setup for verification emails
-const brevo = new Brevo.TransactionalEmailsApi();
-brevo.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
-
-// ✅ Nodemailer setup (used for appointment notifications)
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-});
+// ✅ Brevo setup
+const apiInstance = new Brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
-// ✅ SIGNUP — now sends verification email via Brevo
+// ✅ SIGNUP
 app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const existing = await User.findOne({ email });
     if (existing) {
@@ -74,34 +64,30 @@ app.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await User.create({
-      email,
-      password: hashedPassword,
-      verificationCode: code,
-    });
+    await User.create({ email, password: hashedPassword, verificationCode: code });
 
-    // ✅ Send verification email using Brevo
-    const verifyEmail = new Brevo.SendSmtpEmail();
-    verifyEmail.subject = "Verify your email address";
-    verifyEmail.htmlContent = `<h2>Verify Your Email</h2><p>Your verification code is <b>${code}</b></p>`;
-    verifyEmail.sender = { name: "Auth App", email: process.env.BREVO_SENDER };
-    verifyEmail.to = [{ email }];
+    // ✅ Send verification email via Brevo
+    const sendSmtpEmail = new Brevo.SendSmtpEmail();
+    sendSmtpEmail.subject = "Verify your email address";
+    sendSmtpEmail.htmlContent = `<h2>Verify Your Email</h2><p>Your verification code is <b>${code}</b></p>`;
+    sendSmtpEmail.sender = { name: "Auth App", email: process.env.BREVO_SENDER };
+    sendSmtpEmail.to = [{ email }];
 
-    await brevo.sendTransacEmail(verifyEmail);
-    console.log(`📧 Verification email sent via Brevo to ${email}`);
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`📧 Verification email sent to: ${email}`);
 
     req.session.pendingUser = email;
     res.redirect("/verify.html");
   } catch (err) {
-    console.error(err);
+    console.error("Signup error:", err);
     res.status(500).send("Error creating account.");
   }
 });
 
+// ✅ VERIFY
 app.post("/verify", async (req, res) => {
   const { code } = req.body;
   const email = req.session.pendingUser;
-
   if (!email) return res.redirect("/");
 
   try {
@@ -119,41 +105,42 @@ app.post("/verify", async (req, res) => {
       res.send("<script>alert('Invalid verification code'); window.location.href='/verify.html'</script>");
     }
   } catch (err) {
-    console.error(err);
+    console.error("Verification error:", err);
     res.status(500).send("Verification failed.");
   }
 });
 
+// ✅ LOGIN
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (!user) {
       return res.send("<script>alert('Invalid email or password'); window.location.href='/'</script>");
     }
-
     if (!user.verified) {
       return res.send("<script>alert('Please verify your email before logging in'); window.location.href='/'</script>");
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
       return res.send("<script>alert('Invalid email or password'); window.location.href='/'</script>");
     }
 
     req.session.user = user.email;
     res.redirect("/home");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error logging in.");
+    console.error("Login error:", err);
+    res.status(500).send("Login failed.");
   }
 });
 
+// ✅ LOGOUT
 app.get("/logout", (req, res) => {
   req.session.destroy(() => res.redirect("/"));
 });
 
+// ✅ HOME
 app.get("/home", (req, res) => {
   if (!req.session.user) return res.redirect("/");
   res.sendFile(path.join(__dirname, "protected", "home.html"));
@@ -161,9 +148,7 @@ app.get("/home", (req, res) => {
 
 // ✅ Appointments
 app.post("/api/appointments", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+  if (!req.session.user) return res.status(401).json({ error: "Unauthorized" });
 
   try {
     const { type, date, time } = req.body;
@@ -180,103 +165,7 @@ app.post("/api/appointments", async (req, res) => {
 
     res.status(201).json(appointment);
   } catch (err) {
-    console.error("Error creating appointment:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-app.get("/api/appointments", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const appointments = await Appointment.find({ userEmail: req.session.user });
-    res.json(appointments);
-  } catch (err) {
-    console.error("Error fetching appointments:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-app.patch("/api/appointments/:id/accept", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const { id } = req.params;
-    console.log("Accept request for:", id, "by user:", req.session.user);
-
-    const updated = await Appointment.findOneAndUpdate(
-      { _id: id, userEmail: req.session.user },
-      { status: "Confirmed" },
-      { new: true }
-    );
-
-    if (!updated) {
-      return res.status(404).json({ error: "Appointment not found or unauthorized" });
-    }
-
-    await transporter.sendMail({
-      from: `"Portal Appointments" <${process.env.GMAIL_USER}>`,
-      to: updated.userEmail,
-      subject: "Appointment Confirmation",
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <h2 style="color: #2E86C1;">Appointment Confirmed</h2>
-          <p>Dear Student,</p>
-          <p>Your appointment has been confirmed.</p>
-          <table style="margin-top: 10px; margin-bottom: 10px; border-collapse: collapse;">
-            <tr><td style="padding: 5px 10px; font-weight: bold;">Type:</td><td style="padding: 5px 10px;">${updated.type}</td></tr>
-            <tr><td style="padding: 5px 10px; font-weight: bold;">Date:</td><td style="padding: 5px 10px;">${updated.date}</td></tr>
-            <tr><td style="padding: 5px 10px; font-weight: bold;">Time:</td><td style="padding: 5px 10px;">${updated.time}</td></tr>
-          </table>
-          <p>Please make sure to arrive on time.</p>
-        </div>
-      `,
-    });
-
-    res.json({ message: "Appointment accepted and email sent.", appointment: updated });
-  } catch (err) {
-    console.error("Error accepting appointment:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-app.patch("/api/appointments/:id/cancel", async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const { id } = req.params;
-    console.log("Cancel request for:", id, "by user:", req.session.user);
-
-    const updated = await Appointment.findOneAndUpdate(
-      { _id: id, userEmail: req.session.user },
-      { status: "Cancelled" },
-      { new: true }
-    );
-
-    if (!updated) {
-      return res.status(404).json({ error: "Appointment not found or unauthorized" });
-    }
-
-    await transporter.sendMail({
-      from: `"Appointment System" <${process.env.GMAIL_USER}>`,
-      to: updated.userEmail,
-      subject: "Your Appointment Has Been Cancelled ❌",
-      html: `
-        <h2>Appointment Cancelled</h2>
-        <p>Your appointment for <b>${updated.type}</b> on <b>${updated.date}</b> at <b>${updated.time}</b> has been cancelled.</p>
-        <p>If this was a mistake, please log in and reschedule.</p>
-      `,
-    });
-
-    res.json({ message: "Appointment cancelled and email sent.", appointment: updated });
-  } catch (err) {
-    console.error("Error canceling appointment:", err);
+    console.error("Appointment error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
