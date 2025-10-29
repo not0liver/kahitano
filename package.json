@@ -1,14 +1,14 @@
 {
   "name": "auth-app",
   "version": "1.0.0",
+  "description": "Authentication app with Brevo email verification",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "license": "ISC",
   "dependencies": {
+    "@getbrevo/brevo": "^1.0.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "connect-mongo": "^5.1.0",
@@ -16,7 +16,6 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
-    "mongoose": "^8.19.2",
-    "nodemailer": "^6.9.13"
+    "mongoose": "^8.19.2"
   }
 }
