@@ -18,6 +18,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
+// ----------------- USER MODEL -----------------
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
@@ -55,37 +56,43 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
+
 app.post("/signup", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body; 
+
   try {
-    const existing = await User.findOne({ email: username });
+    // Check if email already exists
+    const existing = await User.findOne({ email });
     if (existing) {
       return res.send("<script>alert('Email already registered.'); window.location.href='/'</script>");
     }
+
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
     await User.create({
-      email: username,
+      email,
       password: hashedPassword,
       verificationCode: code,
     });
 
     await transporter.sendMail({
       from: `"Auth App" <${process.env.GMAIL_USER}>`,
-      to: username,
+      to: email,
       subject: "Verify your email address",
       html: `<h2>Verify Your Email</h2><p>Your code is <b>${code}</b></p>`,
     });
 
-    req.session.pendingUser = username;
+
+    req.session.pendingUser = email;
     res.redirect("/verify.html");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error creating account.");
   }
 });
+
 
 app.post("/verify", async (req, res) => {
   const { code } = req.body;
@@ -114,9 +121,10 @@ app.post("/verify", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+
   try {
-    const user = await User.findOne({ email: username });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.send("<script>alert('Invalid email or password'); window.location.href='/'</script>");
     }
@@ -138,13 +146,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/home", (req, res) => {
-  if (!req.session.user) return res.redirect("/");
-  res.sendFile(path.join(__dirname, "protected", "home.html"));
-});
 
 app.get("/logout", (req, res) => {
   req.session.destroy(() => res.redirect("/"));
+});
+
+
+app.get("/home", (req, res) => {
+  if (!req.session.user) return res.redirect("/");
+  res.sendFile(path.join(__dirname, "protected", "home.html"));
 });
 
 app.post("/api/appointments", async (req, res) => {
@@ -162,7 +172,7 @@ app.post("/api/appointments", async (req, res) => {
       userEmail: req.session.user,
       type,
       date,
-      time
+      time,
     });
 
     res.status(201).json(appointment);
@@ -205,40 +215,26 @@ app.patch("/api/appointments/:id/accept", async (req, res) => {
       return res.status(404).json({ error: "Appointment not found or unauthorized" });
     }
 
-await transporter.sendMail({
-  from: `"Portal Appointments" <${process.env.GMAIL_USER}>`,
-  to: updated.userEmail,
-  subject: "Appointment Confirmation",
-  html: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <h2 style="color: #2E86C1;">Appointment Confirmed</h2>
-      <p>Dear ${updated.userName || "Student"},</p>
-      <p>We are pleased to confirm your appointment with our school portal.</p>
-      <table style="margin-top: 10px; margin-bottom: 10px; border-collapse: collapse;">
-        <tr>
-          <td style="padding: 5px 10px; font-weight: bold;">Appointment Type:</td>
-          <td style="padding: 5px 10px;">${updated.type}</td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 10px; font-weight: bold;">Date:</td>
-          <td style="padding: 5px 10px;">${updated.date}</td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 10px; font-weight: bold;">Time:</td>
-          <td style="padding: 5px 10px;">${updated.time}</td>
-        </tr>
-      </table>
-      <p>Please make sure to arrive on time. If you need to reschedule, kindly contact us in advance.</p>
-      <br>
-    </div>
-  `,
-});
-
-
-    res.json({
-      message: "Appointment accepted and confirmation email sent.",
-      appointment: updated,
+    await transporter.sendMail({
+      from: `"Portal Appointments" <${process.env.GMAIL_USER}>`,
+      to: updated.userEmail,
+      subject: "Appointment Confirmation",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h2 style="color: #2E86C1;">Appointment Confirmed</h2>
+          <p>Dear Student,</p>
+          <p>Your appointment has been confirmed.</p>
+          <table style="margin-top: 10px; margin-bottom: 10px; border-collapse: collapse;">
+            <tr><td style="padding: 5px 10px; font-weight: bold;">Type:</td><td style="padding: 5px 10px;">${updated.type}</td></tr>
+            <tr><td style="padding: 5px 10px; font-weight: bold;">Date:</td><td style="padding: 5px 10px;">${updated.date}</td></tr>
+            <tr><td style="padding: 5px 10px; font-weight: bold;">Time:</td><td style="padding: 5px 10px;">${updated.time}</td></tr>
+          </table>
+          <p>Please make sure to arrive on time.</p>
+        </div>
+      `,
     });
+
+    res.json({ message: "Appointment accepted and email sent.", appointment: updated });
   } catch (err) {
     console.error("Error accepting appointment:", err);
     res.status(500).json({ error: "Server error" });
@@ -270,18 +266,12 @@ app.patch("/api/appointments/:id/cancel", async (req, res) => {
       subject: "Your Appointment Has Been Cancelled ❌",
       html: `
         <h2>Appointment Cancelled</h2>
-        <p>Hello,</p>
-        <p>Your appointment for <b>${updated.type}</b> on <b>${updated.date}</b> at <b>${updated.time}</b> has been <b>cancelled</b>.</p>
+        <p>Your appointment for <b>${updated.type}</b> on <b>${updated.date}</b> at <b>${updated.time}</b> has been cancelled.</p>
         <p>If this was a mistake, please log in and reschedule.</p>
-        <br>
-        <p>Thank you!</p>
       `,
     });
 
-    res.json({
-      message: "Appointment cancelled and email notification sent.",
-      appointment: updated,
-    });
+    res.json({ message: "Appointment cancelled and email sent.", appointment: updated });
   } catch (err) {
     console.error("Error canceling appointment:", err);
     res.status(500).json({ error: "Server error" });
