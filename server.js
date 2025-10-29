@@ -6,7 +6,7 @@ import MongoStore from "connect-mongo";
 import path from "path";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { fileURLToPath } from "url";
 import Appointment from "./models/Appointment.js";
 
@@ -14,6 +14,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -47,14 +48,6 @@ app.use(
   })
 );
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS
-  }
-});
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
@@ -73,8 +66,8 @@ app.post("/signup", async (req, res) => {
       password: hashedPassword,
       verificationCode: code
     });
-    await transporter.sendMail({
-      from: `"Auth App" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: "Auth App <onboarding@resend.dev>",
       to: email,
       subject: "Verify your email address",
       html: `<h2>Verify Your Email</h2><p>Your code is <b>${code}</b></p>`
@@ -189,8 +182,8 @@ app.patch("/api/appointments/:id/accept", async (req, res) => {
     if (!updated) {
       return res.status(404).json({ error: "Appointment not found or unauthorized" });
     }
-    await transporter.sendMail({
-      from: `"Portal Appointments" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: "Portal Appointments <onboarding@resend.dev>",
       to: updated.userEmail,
       subject: "Appointment Confirmation",
       html: `
@@ -228,8 +221,8 @@ app.patch("/api/appointments/:id/cancel", async (req, res) => {
     if (!updated) {
       return res.status(404).json({ error: "Appointment not found or unauthorized" });
     }
-    await transporter.sendMail({
-      from: `"Appointment System" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: "Appointment System <onboarding@resend.dev>",
       to: updated.userEmail,
       subject: "Your Appointment Has Been Cancelled ❌",
       html: `
