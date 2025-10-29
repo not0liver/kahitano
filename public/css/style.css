@@ -1,0 +1,159 @@
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: #f2f4f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 20px;
+  color: black;
+}
+
+/* === Login Card === */
+.container {
+  background: #fff;
+  width: 700px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 50px;
+}
+
+.form {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 12px;
+  display: block;
+}
+
+input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.login-btn {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #0f5fcc;
+}
+
+.register-btn {
+  background-color: #888;
+  color: white;
+}
+
+.register-btn:hover {
+  background-color: #666;
+}
+
+.qr-section {
+  width: 40%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-section img {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px;
+  background: #fff;
+}
+
+.qr-section p {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.signup-container {
+  background: white;
+  width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+}
+
+.signup-container h2 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.signup-btn {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.signup-btn:hover {
+  background-color: #0f5fcc;
+}
+
+.signup-container p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+@media (max-width: 700px) {
+  .container {
+    flex-direction: column;
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  .form, .qr-section {
+    width: 100%;
+  }
+
+  .qr-section {
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Verification</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="verify-container">
+    <h2>Verify Your Email</h2>
+    <p>Enter the 6-digit code sent to your Gmail.</p>
+    <form action="/verify" method="POST">
+      <input type="text" name="code" placeholder="Enter code" required maxlength="6">
+      <button type="submit">Verify</button>
+    </form>
+  </div>
+</body>
+</html>

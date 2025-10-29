@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans');
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #fff;
+  color: #222;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #1A6105;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.profile-placeholder {
+  width: 180px;
+  height: 100px;
+  background-color: #d9d9d9;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+}
+
+.menu-item.active {
+  background-color: #787878;
+  border-left: 4px solid #ffffff;
+  color: black;
+}
+
+.menu-item:hover {
+  background-color: #9c9c9c;
+  color: black;
+}
+
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  flex-shrink: 0;
+}
+
+.menu-item:hover svg {
+  stroke: black;
+}
+
+.menu-item.active svg {
+  stroke: black;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px 40px;
+  position: relative;
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  padding-bottom: 6px;
+}
+
+.tab.active {
+  border-bottom: 2px solid #000;
+}
+
+.divider {
+  height: 1px;
+  background-color: #000;
+  margin: 10px 0 30px 0;
+}
+
+.appointment-section, .upload-section {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.step-btn {
+  background-color: #d9d9d9;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.dropdown, .popup {
+  position: absolute;
+  top: 45px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.option {
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 4px;
+}
+
+.option:hover {
+  background-color: #555;
+}
+
+#calendarPopup {
+  padding: 10px;
+  width: 260px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+
+.calendar-grid div {
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.calendar-grid div:hover {
+  background-color: #e0e0e0;
+}
+
+.weekend {
+  color: red;
+}
+
+.sunday {
+  color: gray;
+}
+
+#timePopup {
+  padding: 10px;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.time-option {
+  background-color: #d9d9d9;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.time-option:hover {
+  background-color: #bbb;
+}
+
+.upload-label {
+  background-color: #d9d9d9;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.upload-label:hover {
+  background-color: #ccc;
+}
+
+.appoint-btn {
+  position: absolute;
+  right: 40px;
+  bottom: 20px;
+  background-color: #d9d9d9;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+.tab-content, .doc-content {
+  display: none;
+}
+.tab-content.active, .doc-content.active {
+  display: block;
+}

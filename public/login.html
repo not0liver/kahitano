@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Account - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a href="#" class="back">&#8592;</a>
+
+  <div class="container">
+    <div class="form">
+      <h2>Student Account</h2>
+      <form action="/login" method="POST">
+        <label>Email or Student ID</label>
+        <input type="text" name="username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <a href="#">Forgot password?</a>
+
+        <button type="submit" class="login-btn">LOG IN</button>
+        <p>Need an account?</p>
+        <a href="/signup.html"><button type="button" class="register-btn">REGISTER</button></a>
+      </form>
+    </div>
+
+    <div class="qr-section">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Login" alt="QR Code">
+      <p>Login with QR CODE</p>
+    </div>
+  </div>
+</body>
+</html>

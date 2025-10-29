@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Portal</title>
+  <link rel="stylesheet" href="/css/home.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile-placeholder"></div>
+      <nav class="menu">
+        <button class="menu-item active" data-page="homepage">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+            <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+          </svg>
+          <span>Homepage</span>
+        </button>
+        <button class="menu-item" data-page="grades">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+          </svg>
+          <span>Grades</span>
+        </button>
+        <button class="menu-item" data-page="enrollment">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625Z" />
+            <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
+          </svg>
+          <span>Enrollment</span>
+        </button>
+        <button class="menu-item" data-page="appointments">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+          </svg>
+          <span>Appointments</span>
+        </button>
+        <button class="menu-item" data-page="documents">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+          </svg>
+          <span>Documents</span>
+        </button>
+        <button class="menu-item" data-page="calendar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+          </svg>
+          <span>Calendar</span>
+        </button>
+        <button class="menu-item" data-page="schedule">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
+          </svg>
+          <span>Schedule</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section id="homepage" class="page active">
+        <h2>Announcement</h2>
+        <p>Announcement here</p>
+      </section>
+
+      <section id="grades" class="page">
+        <h2>Grades</h2>
+        <table border="1" cellspacing="0" cellpadding="6" width="100%">
+          <thead style="background-color:#e9e9e9;">
+            <tr>
+              <th>Subject Code</th>
+              <th>Subject Name</th>
+              <th>Midterm</th>
+              <th>Final</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>SDF</td><td>Object Orient</td><td>1</td><td>1</td><td>Passed</td></tr>
+            <tr><td>SDF</td><td>Object Orient</td><td>1</td><td>1</td><td>Passed</td></tr>
+            <tr><td>SDF</td><td>Object Orient</td><td>1</td><td>1</td><td>Passed</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="enrollment" class="page">
+        <h2>Enrollment Information</h2>
+        <p><strong>Semester:</strong> 2nd Semester, AY 2025-2026</p>
+        <p><strong>Status:</strong> Enrolled</p>
+        <table border="1" cellspacing="0" cellpadding="6" width="100%">
+          <thead style="background-color:#e9e9e9;">
+            <tr>
+              <th>Subject Code</th>
+              <th>Subject Title</th>
+              <th>Units</th>
+              <th>Schedule</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>SDF</td><td>Object Orient</td><td>3</td><td>Mon/Wed 9:00–10:30</td><td>Enrolled</td></tr>
+            <tr><td>SDF</td><td>Object Orient</td><td>3</td><td>Tue/Thu 10:30–12:00</td><td>Enrolled</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="appointments" class="page">
+        <div class="tabs">
+          <button class="tab active" data-tab="set">Set Appointment</button>
+          <button class="tab" data-tab="my">My Appointments</button>
+          <button class="tab" data-tab="reschedule">Reschedule / Cancel</button>
+          <button class="tab" data-tab="guidelines">Appointment Guidelines</button>
+        </div>
+        <div class="divider"></div>
+
+        <div class="tab-content active" id="set">
+          <div class="appointment-section">
+            <div class="step">
+              <button class="step-btn" id="chooseAppointment">Choose Appointments</button>
+              <div class="dropdown hidden" id="appointmentDropdown">
+                <button class="option">Summary of Grades</button>
+                <button class="option">Clearance Request</button>
+                <button class="option">Documents Request</button>
+              </div>
+            </div>
+            <div class="step">
+              <button class="step-btn" id="chooseDate">Choose Date</button>
+              <div class="popup hidden" id="calendarPopup">
+                <div class="calendar-header">
+                  <button id="prevMonth">&lt;</button>
+                  <span id="monthYear"></span>
+                  <button id="nextMonth">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+              </div>
+            </div>
+            <div class="step">
+              <button class="step-btn" id="chooseTime">Choose Time</button>
+              <div class="popup hidden" id="timePopup">
+                <div class="time-grid" id="timeGrid">
+                  <button class="time-option">9:00 AM</button>
+                  <button class="time-option">10:00 AM</button>
+                  <button class="time-option">11:00 AM</button>
+                  <button class="time-option">1:00 PM</button>
+                  <button class="time-option">2:00 PM</button>
+                  <button class="time-option">3:00 PM</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="appoint-btn">Appoint</button>
+        </div>
+
+        <div class="tab-content" id="my">
+          <h3>My Appointments</h3>
+          <p>You currently have no scheduled appointments.</p>
+        </div>
+
+        <div class="tab-content" id="reschedule">
+          <h3>Reschedule / Cancel</h3>
+          <p>Here you can manage existing appointments.</p>
+        </div>
+
+        <div class="tab-content" id="guidelines">
+          <h3>Appointment Guidelines</h3>
+          <ul>
+            <li>Please arrive on time for your scheduled appointment.</li>
+            <li>Ensure you bring necessary documents.</li>
+            <li>Reschedule at least 24 hours in advance if needed.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="documents" class="page">
+        <div class="tabs">
+          <button class="tab active" data-doc="submit">Submit Documents</button>
+          <button class="tab" data-doc="myDocs">My Submissions</button>
+        </div>
+        <div class="divider"></div>
+
+        <div class="doc-content active" id="submit">
+          <div class="step">
+            <button class="step-btn" id="chooseDocument">Choose a Document</button>
+            <div class="dropdown hidden" id="documentDropdown">
+              <button class="option">Summary of Grades</button>
+              <button class="option">Form 137</button>
+              <button class="option">Official Registration Form</button>
+              <button class="option">Diploma</button>
+              <button class="option">Transcript of Record</button>
+              <button class="option">Good Moral</button>
+              <button class="option">Birth Certificate</button>
+            </div>
+          </div>
+
+          <div class="upload-section">
+            <label for="fileUpload" class="upload-label">Upload File</label>
+            <input type="file" id="fileUpload" class="hidden" />
+          </div>
+
+          <button class="appoint-btn">Submit</button>
+        </div>
+
+        <div class="doc-content" id="myDocs">
+          <h3>My Submitted Documents</h3>
+          <p>No documents submitted yet.</p>
+        </div>
+      </section>
+
+      <section id="calendar" class="page">
+        <h2>Calendar</h2>
+        <p>Upcoming events and appointments:</p>
+        <ul>
+          <li><strong>Oct 30:</strong> Enrollment Deadline</li>
+          <li><strong>Nov 5:</strong> Start of Classes</li>
+          <li><strong>Nov 10:</strong> Appointment with Registrar</li>
+        </ul>
+      </section>
+
+      <section id="schedule" class="page">
+        <h2>Class Schedule</h2>
+        <table border="1" cellspacing="0" cellpadding="6" width="100%">
+          <thead style="background-color:#e9e9e9;">
+            <tr>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Subject</th>
+              <th>Room</th>
+              <th>Instructor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Monday</td><td>9:00 - 10:30</td><td>SDF</td><td>Lab 3</td><td>Ms. Joella</td></tr>
+            <tr><td>Tuesday</td><td>10:30 - 12:00</td><td>SDF</td><td>Room 201</td><td>Ms. Joella</td></tr>
+            <tr><td>Wednesday</td><td>9:00 - 10:30</td><td>SDF</td><td>Lab 3</td><td>Ms. Joella</td></tr>
+            <tr><td>Thursday</td><td>10:30 - 12:00</td><td>SDF</td><td>Room 201</td><td>Ms. Joella</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+document.querySelectorAll(".menu-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
+    btn.classList.add("active");
+    const pageId = btn.dataset.page;
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(pageId).classList.add("active");
+  });
+});
+
+const appointmentTabs = document.querySelectorAll("#appointments .tab");
+appointmentTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    appointmentTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    const target = tab.dataset.tab;
+    document.querySelectorAll("#appointments .tab-content").forEach(c => c.classList.remove("active"));
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+const docTabs = document.querySelectorAll("#documents .tab");
+docTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    docTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    const target = tab.dataset.doc;
+    document.querySelectorAll("#documents .doc-content").forEach(c => c.classList.remove("active"));
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+const appointmentDropdown = document.getElementById("appointmentDropdown");
+const documentDropdown = document.getElementById("documentDropdown");
+const chooseAppointment = document.getElementById("chooseAppointment");
+const chooseDocument = document.getElementById("chooseDocument");
+const chooseTime = document.getElementById("chooseTime");
+const timePopup = document.getElementById("timePopup");
+const calendarPopup = document.getElementById("calendarPopup");
+const chooseDateBtn = document.getElementById("chooseDate");
+
+chooseAppointment.addEventListener("click", e => {
+  e.stopPropagation();
+  appointmentDropdown.classList.toggle("hidden");
+  documentDropdown.classList.add("hidden");
+  timePopup.classList.add("hidden");
+  calendarPopup.classList.add("hidden");
+});
+
+chooseDocument.addEventListener("click", e => {
+  e.stopPropagation();
+  documentDropdown.classList.toggle("hidden");
+  appointmentDropdown.classList.add("hidden");
+  timePopup.classList.add("hidden");
+  calendarPopup.classList.add("hidden");
+});
+
+chooseTime.addEventListener("click", e => {
+  e.stopPropagation();
+  timePopup.classList.toggle("hidden");
+  appointmentDropdown.classList.add("hidden");
+  documentDropdown.classList.add("hidden");
+  calendarPopup.classList.add("hidden");
+});
+
+chooseDateBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  calendarPopup.classList.toggle("hidden");
+  appointmentDropdown.classList.add("hidden");
+  documentDropdown.classList.add("hidden");
+  timePopup.classList.add("hidden");
+});
+
+window.addEventListener("click", () => {
+  appointmentDropdown.classList.add("hidden");
+  documentDropdown.classList.add("hidden");
+  timePopup.classList.add("hidden");
+  calendarPopup.classList.add("hidden");
+});
+
+const monthYear = document.getElementById("monthYear");
+const calendarGrid = document.getElementById("calendarGrid");
+const prevMonth = document.getElementById("prevMonth");
+const nextMonth = document.getElementById("nextMonth");
+
+let currentDate = new Date();
+let selectedAppointment = "";
+let selectedDate = "";
+let selectedTime = "";
+
+function renderCalendar(dateObj) {
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth();
+  const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+  monthYear.textContent = `${monthNames[month]} ${year}`;
+  calendarGrid.innerHTML = "";
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("div");
+    empty.classList.add("empty-day");
+    calendarGrid.appendChild(empty);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const btn = document.createElement("div");
+    btn.textContent = day;
+    btn.classList.add("day-btn");
+    btn.addEventListener("click", () => {
+      selectedDate = `${monthNames[month]} ${day}, ${year}`;
+      chooseDateBtn.textContent = "Date: " + selectedDate;
+      calendarPopup.classList.add("hidden");
+    });
+    calendarGrid.appendChild(btn);
+  }
+}
+
+prevMonth.addEventListener("click", e => {
+  e.stopPropagation();
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar(currentDate);
+});
+
+nextMonth.addEventListener("click", e => {
+  e.stopPropagation();
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar(currentDate);
+});
+
+chooseDateBtn.addEventListener("click", e => {
+  e.stopPropagation();
+  renderCalendar(currentDate);
+});
+
+document.querySelectorAll("#appointmentDropdown .option").forEach(opt => {
+  opt.addEventListener("click", () => {
+    selectedAppointment = opt.textContent;
+    chooseAppointment.textContent = selectedAppointment;
+    appointmentDropdown.classList.add("hidden");
+  });
+});
+
+document.querySelectorAll("#timePopup .time-option").forEach(opt => {
+  opt.addEventListener("click", () => {
+    selectedTime = opt.textContent;
+    chooseTime.textContent = selectedTime;
+    timePopup.classList.add("hidden");
+  });
+});
+
+const appointBtn = document.querySelector("#set .appoint-btn");
+
+appointBtn.addEventListener("click", async () => {
+  if (!selectedAppointment || !selectedDate || !selectedTime) {
+    alert("Please select appointment type, date, and time first!");
+    return;
+  }
+
+  const data = {
+    type: selectedAppointment,
+    date: selectedDate,
+    time: selectedTime
+  };
+
+  try {
+    const res = await fetch("/api/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (!res.ok) throw new Error("Failed to save appointment");
+    alert("✅ Appointment created successfully!");
+    loadAppointments();
+  } catch (err) {
+    console.error(err);
+    alert("❌ Error creating appointment.");
+  }
+});
+
+async function loadAppointments() {
+  try {
+    const res = await fetch("/api/appointments");
+    if (!res.ok) throw new Error("Failed to fetch appointments");
+    const appointments = await res.json();
+
+    const myTab = document.getElementById("my");
+    const reschedTab = document.getElementById("reschedule");
+
+    if (!appointments.length) {
+      myTab.innerHTML = "<h3>My Appointments</h3><p>You currently have no scheduled appointments.</p>";
+      reschedTab.innerHTML = "<h3>Reschedule / Cancel</h3><p>No cancelled appointments found.</p>";
+      return;
+    }
+
+    let myHtml = `
+      <h3>My Appointments</h3>
+      <table border='1' cellspacing='0' cellpadding='6' width='100%'>
+        <thead><tr><th>Type</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+    `;
+    appointments
+      .filter(a => a.status !== "Cancelled")
+      .forEach(a => {
+        myHtml += `
+          <tr data-id="${a._id}">
+            <td>${a.type}</td>
+            <td>${a.date}</td>
+            <td>${a.time}</td>
+            <td>${a.status}</td>
+            <td>
+              <button class="accept-btn" data-id="${a._id}" style="background:#28a745;color:#fff;border:none;padding:4px 8px;margin-right:5px;border-radius:5px;cursor:pointer;">Accept</button>
+              <button class="cancel-btn" data-id="${a._id}" style="background:#dc3545;color:#fff;border:none;padding:4px 8px;border-radius:5px;cursor:pointer;">Cancel</button>
+            </td>
+          </tr>
+        `;
+      });
+    myHtml += `</tbody></table>
+      <br>
+      <button id="reschedBtn" style="background:#007bff;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;">Reschedule</button>
+    `;
+    myTab.innerHTML = myHtml;
+
+    let resHtml = `
+      <h3>Reschedule / Cancel</h3>
+      <table border='1' cellspacing='0' cellpadding='6' width='100%'>
+        <thead><tr><th>Type</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+        <tbody>
+    `;
+    const cancelledAppointments = appointments.filter(a => a.status === "Cancelled");
+    if (cancelledAppointments.length === 0) {
+      resHtml += `<tr><td colspan='4'>No cancelled appointments found.</td></tr>`;
+    } else {
+      cancelledAppointments.forEach(a => {
+        resHtml += `
+          <tr>
+            <td>${a.type}</td>
+            <td>${a.date}</td>
+            <td>${a.time}</td>
+            <td style="color:red;">${a.status}</td>
+          </tr>
+        `;
+      });
+    }
+    resHtml += "</tbody></table>";
+    reschedTab.innerHTML = resHtml;
+
+    document.querySelectorAll(".accept-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        try {
+          const res = await fetch(`/api/appointments/${id}/accept`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" }
+          });
+          if (!res.ok) throw new Error("Failed to accept appointment");
+          alert("✅ Appointment accepted successfully!");
+          loadAppointments();
+        } catch (err) {
+          console.error(err);
+          alert("Error accepting appointment.");
+        }
+      });
+    });
+
+    document.querySelectorAll(".cancel-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        if (!confirm("Are you sure you want to cancel this appointment?")) return;
+        try {
+          const res = await fetch(`/api/appointments/${id}/cancel`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" }
+          });
+          if (!res.ok) throw new Error("Failed to cancel appointment");
+          alert("❌ Appointment canceled successfully.");
+          loadAppointments();
+        } catch (err) {
+          console.error(err);
+          alert("Error canceling appointment.");
+        }
+      });
+    });
+
+    document.getElementById("reschedBtn").addEventListener("click", () => {
+      alert("🔁 Reschedule feature coming soon!");
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadAppointments);
+</script>
+
+
+</body>
+</html>
